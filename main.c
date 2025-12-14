@@ -1,11 +1,19 @@
 #include "header.h"
 
 int main(){
-    FILE *readFiles = fopen("Data-50K.txt", "r");
+    DataKata dataBase[maxPanjang];
+    int totalKata = 0;
+    char namaFile[100];
+
+    printf("Masukkan nama file input (txt): ");
+    scanf("%[^\n]", namaFile);
     
+    FILE *fp = fopen(namaFile, "r");
 
+    if(fp == NULL){
+        printf("Error, Gagal membuka file!!!\n");
+        return 1;
+    }
 
-
-    fclose(readFiles);
     return 0;
 }

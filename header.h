@@ -1,14 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 
+#define maxKata 20000
+#define maxPanjang 100
+
 typedef struct{
-    char abjad;
-    int jumlah_kata;
-    int panjang_kata;
-    char kata[1024];
-}Data_String;
-
-
-FILE *openFile;
-
-
+    char kata[maxPanjang];
+    int panjang;
+    int frekuensi;
+}DataKata;
