@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define maxKata 20000
+1
 #define maxPanjang 100
 
 typedef struct {

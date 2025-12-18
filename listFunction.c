@@ -37,10 +37,9 @@ void cleanSafe(char *kata, DataKata *dataBase, int *ptrTotal){
 }
 
 void bukaFile(char *namaFile, DataKata *dataBase, int *ptrTotal){
-    char buffer[1024];
+    char buffer[4096]; 
     char *token;
-    int ambilData = 0; // 0 = skip, 1 = ambil
-    int dalamUrl = 0; //ngecek apakah baris itu dalam url atau tidak 
+    int ambilData = 0; 
 
     FILE *fp = fopen(namaFile, "r");
     if(fp == NULL){
@@ -49,38 +48,27 @@ void bukaFile(char *namaFile, DataKata *dataBase, int *ptrTotal){
     }
 
     while(fgets(buffer, sizeof(buffer), fp) != NULL){
-
-        if(strstr(buffer, "<url>")){
-            dalamUrl = 1;
-            ambilData = 0;
-            continue;
-        }
-
-        if(strstr(buffer, "</url>")){
-            dalamUrl = 0;
-            ambilData = 0;
-            continue;
-        }
-
-        if(dalamUrl){
-            continue;
-        }
-
-        if(strstr(buffer, "<title>") || strstr(buffer, "<body>")){
-            ambilData = 1;
-        }
-       
-        if(ambilData){
-            token = strtok(buffer, " \n\t\r");
-            while(token != NULL){
-                if(token[0] != '<'){
-                    cleanSafe(token, dataBase, ptrTotal);
+        token = strtok(buffer, " <>+\n\t\r"); 
+        
+        while(token != NULL){
+            if(strcmp(token, "url") == 0) {
+                while(token != NULL && strcmp(token, "/url") != 0) {
+                    token = strtok(NULL, " <>+\n\t\r");
                 }
-                token = strtok(NULL, " \n\t\r");
+            } else if(strcmp(token, "title") == 0 || strcmp(token, "body") == 0) {
+                ambilData = 1;
+            } else if(strcmp(token, "/title") == 0 || strcmp(token, "/body") == 0) {
+                ambilData = 0;
+            } else {
+                if(ambilData && strlen(token) > 0) {
+                    if(strstr(token, "http") == NULL) {
+                        cleanSafe(token, dataBase, ptrTotal);
+                    }
+                }
             }
-        }
-        if(strstr(buffer, "</title>") || strstr(buffer, "</body>")){
-            ambilData = 0;
+            if (token != NULL) {
+                token = strtok(NULL, " <>+\n\t\r");
+            }
         }
     }
     fclose(fp);
@@ -140,23 +128,19 @@ void simpanBinary(DataKata *dataBase, int totalKata, char *namaFileBin) {
 
 void tampilkanData(char *namaFileBin) {
     int n;
-    printf("Anda ingin menampilkan berapa buah abjad (max 26): ");
+    printf("Berapa abjad yang ingin anda lihat (max = 26): "); 
     scanf("%d", &n);
 
     FILE *fbin = fopen(namaFileBin, "rb");
-    if (fbin == NULL) {
-        printf("File binari tidak ditemukan!\n");
-        return;
-    }
+    if (fbin == NULL) return;
 
     char abjad;
     int jmlKata;
     
-    printf("abjad {kata (frekuensi)}\n");
+    printf("abjad {kata (frekuensi)}\n"); 
     
     while (fread(&abjad, sizeof(char), 1, fbin) == 1) {
         fread(&jmlKata, sizeof(int), 1, fbin);
-        
         printf("%c {", abjad);
         
         int limit = (jmlKata < n) ? jmlKata : n;
@@ -175,7 +159,7 @@ void tampilkanData(char *namaFileBin) {
                 if (j < limit - 1) printf(", ");
             }
         }
-        printf("}\n");
+        printf("}\n"); 
     }
     fclose(fbin);
 }
