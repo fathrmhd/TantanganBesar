@@ -24,10 +24,10 @@ int main(void){
 
     do{
         printf("\n================ MENU ================\n");
-        printf("1) Simpan output di dalam file binari\n");
-        printf("2) Tampilkan di layar monitor n kata\n");
+        printf("1) Simpan output ke dalam file binary\n");
+        printf("2) Tampilkan hasil output\n");
         printf("3) Selesai\n");
-        printf("Pilihan anda: ");
+        printf("Pilih: ");
 
         if (scanf("%d", &pilihan) != 1){
             printf("Input tidak valid!\n");
