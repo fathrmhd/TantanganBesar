@@ -15,15 +15,15 @@ int main(){
     
     printf("Sedang membuka file...\n");
     bukaFile(namaFile, dataBase, &totalKata);
-    printf("Selesai buka file. Total kata unik: %d\n", totalKata);
+    printf("Selesai buka file. Total kata unik yang berhasil dibaca : %d\n", totalKata);
 
     printf("Sedang mengurutkan data...\n");
     urutkanData(dataBase, totalKata);
     printf("Selesai mengurutkan.\n");
 
     while(pilihan != 3){
-        printf("\n--- MENU PROJECT BIG CHALLENGE ---\n");
-        printf("1) Simpan luaran dalam file binari\n");
+        printf("\n================ MENU ================\n");
+        printf("1) Simpan output di dalam file binari\n");
         printf("2) Tampilkan di layar monitor n kata\n");
         printf("3) Selesai\n");
         printf("Pilihan anda: ");
@@ -36,14 +36,14 @@ int main(){
                 break;
             case 2:
                 if(statusSimpan == 0){
-                    printf("Menjalankan penyimpanan otomatis ke binari...\n");
+                    printf("Menyimpan hasil scan\n");
                     simpanBinary(dataBase, totalKata, namaFileBin);
                     statusSimpan = 1;
                 }
                 tampilkanData(namaFileBin);
                 break;
             case 3:
-                printf("Program berakhir\n");
+                printf("Program selesai\n");
                 break;
             default:
                 printf("Pilihan tidak valid!\n");

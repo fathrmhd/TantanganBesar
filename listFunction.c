@@ -128,19 +128,18 @@ void simpanBinary(DataKata *dataBase, int totalKata, char *namaFileBin) {
 
 void tampilkanData(char *namaFileBin) {
     int n;
-    printf("\nBerapa jumlah kata teratas yang ingin anda lihat dari setiap abjad?: "); 
+    printf("\nBerapa jumlah kata yang ingin anda lihat : "); 
     if (scanf("%d", &n) != 1) return;
 
     FILE *fbin = fopen(namaFileBin, "rb");
     if (fbin == NULL) {
-        printf("Gagal membuka file binari!\n");
+        printf("Gagal membuka file!\n");
         return;
     }
 
     char abjad;
     int jmlKata;
     
-    // Header Tabel Utama
     printf("\n%s\n", "============================================================");
     printf("| %-5s | %-20s | %-10s | %-10s |\n", "Huruf", "Kata", "Panjang", "Frekuensi");
     printf("%s\n", "------------------------------------------------------------");
@@ -150,10 +149,8 @@ void tampilkanData(char *namaFileBin) {
         
         int limit = (jmlKata < n) ? jmlKata : n;
         
-        // Jika tidak ada kata di abjad ini, kita lewati saja
         if (jmlKata == 0) {
             for (int j = 0; j < jmlKata; j++) {
-                // Tetap harus dibaca agar posisi pointer file bergeser benar
                 int pjg; char kata[maxPanjang]; int frek;
                 fread(&pjg, sizeof(int), 1, fbin);
                 fread(kata, sizeof(char), maxPanjang, fbin);
@@ -172,7 +169,6 @@ void tampilkanData(char *namaFileBin) {
             fread(&frek, sizeof(int), 1, fbin);
             
             if (j < limit) {
-                // Tampilkan huruf hanya pada baris pertama setiap kelompok abjad
                 if (j == 0) {
                     printf("| %-5c | %-20s | %-10d | %-10d |\n", abjad, kata, pjg, frek);
                 } else {
