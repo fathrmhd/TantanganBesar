@@ -1,0 +1,1 @@
+gcc -Wall -o app main.c listFunction.c
