@@ -128,56 +128,49 @@ void simpanBinary(DataKata *dataBase, int totalKata, char *namaFileBin) {
 
 void tampilkanData(char *namaFileBin) {
     int n;
-    printf("\nBerapa jumlah kata yang ingin anda lihat : "); 
-    if (scanf("%d", &n) != 1) return;
+    printf("\nBerapa jumlah kata yang ingin anda lihat : ");
+    if(scanf("%d", &n) != 1 || n <= 0){
+        return;
+    }
 
     FILE *fbin = fopen(namaFileBin, "rb");
     if (fbin == NULL) {
-        printf("Gagal membuka file!\n");
+        printf("Gagal membuka file binari!\n");
         return;
     }
 
     char abjad;
     int jmlKata;
-    
-    printf("\n%s\n", "============================================================");
-    printf("| %-5s | %-20s | %-10s | %-10s |\n", "Huruf", "Kata", "Panjang", "Frekuensi");
-    printf("%s\n", "------------------------------------------------------------");
+    int sisa = n;   
 
     while (fread(&abjad, sizeof(char), 1, fbin) == 1) {
         fread(&jmlKata, sizeof(int), 1, fbin);
-        
-        int limit = (jmlKata < n) ? jmlKata : n;
-        
-        if (jmlKata == 0) {
-            for (int j = 0; j < jmlKata; j++) {
-                int pjg; char kata[maxPanjang]; int frek;
-                fread(&pjg, sizeof(int), 1, fbin);
-                fread(kata, sizeof(char), maxPanjang, fbin);
-                fread(&frek, sizeof(int), 1, fbin);
-            }
-            continue;
-        }
+
+        printf("abjad %c {", abjad);
+
+        int tampil = 0;
 
         for (int j = 0; j < jmlKata; j++) {
             int pjg;
             char kata[maxPanjang];
             int frek;
-            
+
             fread(&pjg, sizeof(int), 1, fbin);
             fread(kata, sizeof(char), maxPanjang, fbin);
             fread(&frek, sizeof(int), 1, fbin);
-            
-            if (j < limit) {
-                if (j == 0) {
-                    printf("| %-5c | %-20s | %-10d | %-10d |\n", abjad, kata, pjg, frek);
-                } else {
-                    printf("| %-5s | %-20s | %-10d | %-10d |\n", "", kata, pjg, frek);
-                }
+
+            if (sisa > 0) {
+                if (tampil > 0) printf(", ");
+                printf("%s (%d)", kata, frek);
+                tampil++;
+                sisa--;
             }
         }
-        printf("%s\n", "------------------------------------------------------------");
+
+        printf("}\n");
+
+        if (sisa <= 0) break;  
     }
-    printf("%s\n", "============================================================");
+
     fclose(fbin);
 }
