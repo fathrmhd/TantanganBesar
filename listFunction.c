@@ -129,24 +129,23 @@ void simpanBinary(DataKata *dataBase, int totalKata, char *namaFileBin) {
 void tampilkanData(char *namaFileBin) {
     int n;
     printf("\nBerapa jumlah kata yang ingin anda lihat : ");
-    if (scanf("%d", &n) != 1 || n <= 0) return;
+    if (scanf("%d", &n) != 1) return;
 
     FILE *fbin = fopen(namaFileBin, "rb");
     if (fbin == NULL) {
-        printf("Gagal membuka file binari!\n");
+        printf("Gagal membuka file!\n");
         return;
     }
 
     char abjad;
     int jmlKata;
-    int sisa = n;   // total kata yang masih boleh ditampilkan
 
     while (fread(&abjad, sizeof(char), 1, fbin) == 1) {
         fread(&jmlKata, sizeof(int), 1, fbin);
 
-        printf("abjad %c : ", abjad);
+        int limit = (jmlKata < n) ? jmlKata : n;
 
-        int tampil = 0;
+        printf("%c {", abjad);
 
         for (int j = 0; j < jmlKata; j++) {
             int pjg;
@@ -157,17 +156,13 @@ void tampilkanData(char *namaFileBin) {
             fread(kata, sizeof(char), maxPanjang, fbin);
             fread(&frek, sizeof(int), 1, fbin);
 
-            if (sisa > 0) {
-                if (tampil > 0) printf(", ");
+            if (j < limit) {
+                if (j > 0) printf(", ");
                 printf("%s (%d)", kata, frek);
-                tampil++;
-                sisa--;
             }
         }
 
-        printf("\n");
-
-        if (sisa <= 0) break; // n kata sudah terpenuhi
+        printf("}\n");
     }
 
     fclose(fbin);
