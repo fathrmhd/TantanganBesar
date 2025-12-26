@@ -129,9 +129,7 @@ void simpanBinary(DataKata *dataBase, int totalKata, char *namaFileBin) {
 void tampilkanData(char *namaFileBin) {
     int n;
     printf("\nBerapa jumlah kata yang ingin anda lihat : ");
-    if(scanf("%d", &n) != 1 || n <= 0){
-        return;
-    }
+    if (scanf("%d", &n) != 1 || n <= 0) return;
 
     FILE *fbin = fopen(namaFileBin, "rb");
     if (fbin == NULL) {
@@ -141,12 +139,12 @@ void tampilkanData(char *namaFileBin) {
 
     char abjad;
     int jmlKata;
-    int sisa = n;   
+    int sisa = n;   // total kata yang masih boleh ditampilkan
 
     while (fread(&abjad, sizeof(char), 1, fbin) == 1) {
         fread(&jmlKata, sizeof(int), 1, fbin);
 
-        printf("abjad %c {", abjad);
+        printf("abjad %c : ", abjad);
 
         int tampil = 0;
 
@@ -167,9 +165,9 @@ void tampilkanData(char *namaFileBin) {
             }
         }
 
-        printf("}\n");
+        printf("\n");
 
-        if (sisa <= 0) break;  
+        if (sisa <= 0) break; // n kata sudah terpenuhi
     }
 
     fclose(fbin);
