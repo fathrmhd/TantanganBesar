@@ -41,7 +41,7 @@ int main(void){
                 break;
             
             case 2:
-                if(!statusSimpan == 0){
+                if(statusSimpan == 0){
                     printf("\nMenyimpan data ke file binary terlebih dahulu\n");
                     simpanBinary(dataBase, totalKata, namaFileBin);
                     statusSimpan = 1;

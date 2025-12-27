@@ -128,8 +128,19 @@ void simpanBinary(DataKata *dataBase, int totalKata, char *namaFileBin) {
 
 void tampilkanData(char *namaFileBin) {
     int n;
-    printf("\nBerapa jumlah kata yang ingin anda lihat : ");
-    if (scanf("%d", &n) != 1) return;
+    printf("\nBerapa jumlah kata yang ingin anda lihat (maks 25): ");
+    if(scanf("%d", &n) != 1){
+        return;
+    }
+
+    if(n > 25){
+        n = 25;
+        printf("Angka yang anda masukkan terlalu besar\n");
+    }
+
+    if(n < 1){
+        return;
+    }
 
     FILE *fbin = fopen(namaFileBin, "rb");
     if (fbin == NULL) {
@@ -157,7 +168,9 @@ void tampilkanData(char *namaFileBin) {
             fread(&frek, sizeof(int), 1, fbin);
 
             if (j < limit) {
-                if (j > 0) printf(", ");
+                if (j > 0){
+                    printf(", ");
+                }
                 printf("%s (%d)", kata, frek);
             }
         }
